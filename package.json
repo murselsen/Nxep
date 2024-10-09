@@ -1,0 +1,14 @@
+{
+  "name": "nxep",
+  "version": "1.0.0",
+  "description": "Scs Software Game Profile Manager!",
+  "main": "main.js",
+  "author": "MQuel",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^32.0.1"
+  }
+}
