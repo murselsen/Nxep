@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-family: "Montserrat", sans-serif;
+  background-image: url(../image/cool-background.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.app-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.main-container {
+  box-sizing: border-box;
+  flex: 85%;
+  margin: 8px;
+  margin-left: -8px;
+  background-color: rgba(26, 31, 55, 0.5);
+}
