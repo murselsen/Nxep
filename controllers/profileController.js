@@ -4,67 +4,91 @@ const path = require("path");
 const config = path.join(__dirname, "..", "config.json");
 const localProfileList = [];
 const cloudProfileList = [];
-
+const Profile = require("../models/profile");
 exports.loadProfiles = async (req, res) => {
   console.clear();
+  console.log(" > Profile Load Method ");
   try {
     let resData = {
-      Profiles: [
-        {
-          title: "Local Profile List",
-          data: localProfileList,
-        },
-        {
-          title: "Cloud Profile List",
-          data: cloudProfileList,
-        },
-      ],
+      Profiles: {
+        localProfileList: localProfileList,
+        cloudProfileList: cloudProfileList,
+      },
     };
 
-    res.json(data);
-
-    console.log(data);
-    console.log("Config Path:", config);
     fs.readFile(config, "utf-8", (err, data) => {
       data = JSON.parse(data);
       fs.readdir(data.user_document_path, (err, files) => {
         if (err) {
           throw new Error("Config Path Not Found !");
         }
-        // console.log("Config Game Dirs:", files)
         files.map((file) => {
-          // Local Profile Folder
           switch (file) {
+            // Local Profile Folder
             case "profiles":
-              let exists = fs.existsSync(
+              const localProfilesPath = path.join(
+                data.user_document_path,
+                file
+              );
+              let existsLocalProfile = fs.existsSync(localProfilesPath);
+              if (existsLocalProfile) {
+                console.log("Profile Folder Exists ?", existsLocalProfile);
+                fs.readdir(localProfilesPath, (err, files) => {
+                  files.map((file) => {
+                    let profilePath = path.join(localProfilesPath, file);
+                    fs.readdir(profilePath, (err, profileContentfiles) => {
+                      // console.log(file, ":", profileContentfiles);
+
+                      profileContentfiles.map((contentFile) => {
+                        switch (contentFile) {
+                          case "profile.sii":
+                            // Create a profile object
+                            const profile = new Profile(profilePath);
+                            console.log(
+                              "\n----------------------------------------------------\nProfile Item:",
+                              profile
+                            );
+
+                            localProfileList.push(profile);
+                          default:
+                            break;
+                        }
+                      });
+                    });
+                  });
+                });
+              } else {
+                throw new Error("Game Local Profile Folder Not Found !");
+              }
+              break;
+
+            // Cloud Profile Folder
+            case "steam_profiles":
+              let existsCloudProfile = fs.existsSync(
                 path.join(data.user_document_path, file)
               );
-              if (exists) {
-                console.log("Profile Folder Exists ?", exists);
-                resData.status = {
-                  title: "Profile List Load",
-                  message: "Game Local Profile Folder Found !",
-                };
-                res.status(200).json();
+              if (existsCloudProfile) {
+                console.log(
+                  "Steam Profile Folder Exists ?",
+                  existsCloudProfile
+                );
               } else {
-                res.status(500).json({
-                  title: "Profile List Load",
-                  message: "Game Local Profile Folder Not Found !",
-                });
+                throw new Error("Game Cloud Profile Folder Not Found !");
               }
               break;
 
             default:
               break;
           }
-          fs.existsSync();
         });
       });
     });
+
+    res.json(resData);
   } catch (error) {
     res.status(500).json({
       title: "Profile List Load",
-      message: error.message,
+      message: error,
     });
   }
 };

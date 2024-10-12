@@ -34,15 +34,15 @@ class Profile {
         profile_name: "",
         creation_time: "",
         save_time: "",
-      }
+      },
     };
     this.init();
     return this;
   }
   init() {
     try {
-      //  this.saveLoad();
       this.profileDetailLoad();
+      //  this.saveLoad();
       // console.log("Profile Detail: ", this.profileDetail);
     } catch (error) {
       console.error(error);
@@ -63,8 +63,8 @@ class Profile {
     // console.log("Profile Detail Stream :", profileDetailStreamLines);
     for (let line of profileDetailStreamLines) {
       if (line.includes("user_profile")) {
-        //this.profileDetail.user_profile_nameless = line.split(" ")[2];
-        // console.log("- Line:", line.split(" "));
+        this.profile.nameless = line.split(" ")[2];
+        console.log("- Line:", line.split(" "));
       }
 
       line = line.trim().split(": ");
@@ -76,105 +76,106 @@ class Profile {
         switch (key) {
           case "face":
             const face = Number(value);
-            this.profileDetail.face = face;
+            this.profile.content.face = face;
             break;
           case "profile_name":
             value = value.replaceAll('"', "");
             const profile_name = value;
-            this.profileDetail.profile_name = profile_name;
+            this.profile.content.profile_name = profile_name;
             break;
           case "brand":
             const brand = value;
-            this.profileDetail.brand = brand;
+            this.profile.content.brand = brand;
             break;
           case "company_name":
             value = value.replaceAll('"', "");
             const company_name = value;
-            this.profileDetail.company_name = company_name;
+            this.profile.content.company_name = company_name;
           case "male":
             const male = Boolean(value);
-            this.profileDetail.male = male;
+            this.profile.content.male = male;
             break;
           case "cached_experience":
             const cached_experience = Number(value);
-            this.profileDetail.cached_experience = cached_experience;
+            this.profile.content.cached_experience = cached_experience;
             break;
 
           case "cached_distance":
             const cached_distance = Number(value);
-            this.profileDetail.cached_distance = cached_distance;
+            this.profile.content.cached_distance = cached_distance;
             break;
           case "cached_stats":
             const cached_stats = Number(value);
-            this.profileDetail.cached_stats = cached_stats;
+            this.profile.content.cached_stats = cached_stats;
             break;
           case "cached_discovery":
             const cached_discovery = Number(value);
-            this.profileDetail.cached_discovery = cached_discovery;
+            this.profile.content.cached_discovery = cached_discovery;
             break;
           case "user_data":
             const user_data = Number(value);
-            this.profileDetail.user_data = user_data;
+            this.profile.content.user_data = user_data;
           case "active_mods":
             const active_mods = Number(value);
-            this.profileDetail.active_mods = active_mods;
+            this.profile.content.active_mods = active_mods;
             break;
           case "customization":
             const customization = Number(value);
-            this.profileDetail.customization = customization;
+            this.profile.content.customization = customization;
             break;
           case "version":
             const version = Number(value);
-            this.profileDetail.version = version;
+            this.profile.content.version = version;
             break;
           case "online_user_name":
             value = value.replaceAll('"', "");
             const online_user_name = value;
-            this.profileDetail.online_user_name = online_user_name;
+            this.profile.content.online_user_name = online_user_name;
           case "online_password":
             value = value.replaceAll('"', "");
             const online_password = value;
-            this.profileDetail.online_password = online_password;
+            this.profile.content.online_password = online_password;
             break;
           case "creation_time":
             const creation_time = Number(value);
-            this.profileDetail.creation_time = creation_time;
+            this.profile.content.creation_time = creation_time;
             break;
           case "save_time":
             const save_time = Number(value);
-            this.profileDetail.save_time = save_time;
+            this.profile.content.save_time = save_time;
             break;
           case "map_path":
             value = value.replaceAll('"', "");
             const map_path = value;
-            this.profileDetail.map_path = map_path;
+            this.profile.content.map_path = map_path;
             break;
           case "logo":
             value = value.replaceAll('"', "");
             const logo = value;
-            this.profileDetail.logo = logo;
+            this.profile.content.logo = logo;
             break;
           default:
             break;
         }
+
         // User Data
         if (key.includes("user_data[")) {
-          this.profileDetail.user_data_list.push(value);
+          this.profile.content.user_data_list.push(value);
           // console.log("User Data Item:", value);
         }
         // Active Mods
         if (key.includes("active_mods[")) {
-          this.profileDetail.active_mods_list.push(value);
+          this.profile.content.active_mods_list.push(value);
           // console.log("Active Mods Item:", value);
         }
         // Cached Stats
         if (key.includes("cached_stats[")) {
-          this.profileDetail.cached_stats_list.push(value);
+          this.profile.content.cached_stats_list.push(value);
           // console.log("Cached Stats Item:", value);
         }
         // Cached Discovery
         if (key.includes("cached_discovery[")) {
-          this.profileDetail.cached_discovery_list.push(value);
+          this.profile.content.cached_discovery_list.push(value);
           // console.log("Cached Discovery Item:", value);
         }
       }

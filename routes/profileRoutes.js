@@ -4,6 +4,8 @@ const router = express.Router();
 // Controller
 const profileController = require("../controllers/profileController");
 
-router.get("/", profileController.loadProfiles);
+router.get("/", async () => {
+  await profileController.loadProfiles();
+});
 
 module.exports = router;

@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   resJson = {
     routes: [
       { title: "Main", path: "/" },
-      { title: "Profile List", path: "profiles/" },
+      { title: "Profile List", path: "/profiles" },
     ],
   };
   res.json(resJson);
