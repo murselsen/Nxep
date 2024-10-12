@@ -1,16 +1,19 @@
 {
   "name": "nxepapi",
   "version": "1.0.0",
-  "description": "<h1>Nxep | Api Console</h1>\r <hr/>\r <b>Coding Time:</b>\r <a href=\"https://wakatime.com/badge/user/602e419d-f1c9-4979-ac85-a3da5d93f7e7/project/420141e0-5a99-479a-afa8-54ae968a5a57\"><img src=\"https://wakatime.com/badge/user/602e419d-f1c9-4979-ac85-a3da5d93f7e7/project/420141e0-5a99-479a-afa8-54ae968a5a57.svg\" alt=\"wakatime\"></a>\r <br/>",
-  "main": "index.js",
+  "description": "Nxep | Api Console",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
   }
 }
