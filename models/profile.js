@@ -8,38 +8,40 @@ class Profile {
     this.displayName = dirPath.split("\\").pop();
     this.profileFilePath = path.join(dirPath, "profile.sii");
     this.saves = [];
-    this.profileDetail = {
-      user_profile_nameless: "",
-      face: "",
-      brand: "",
-      map_path: "",
-      logo: "",
-      company_name: "",
-      male: true,
-      cached_experience: "",
-      cached_distance: "",
-      user_data: "",
-      user_data_list: [],
-      active_mods: "",
-      active_mods_list: [],
-      customization: "",
-      cached_stats: "",
-      cached_stats_list: [],
-      cached_discovery: "",
-      cached_discovery_list: [],
-      version: "",
-      online_user_name: "",
-      online_password: "",
-      profile_name: "",
-      creation_time: "",
-      save_time: "",
+    this.profile = {
+      nameless: "",
+      content: {
+        face: "",
+        brand: "",
+        map_path: "",
+        logo: "",
+        company_name: "",
+        male: true,
+        cached_experience: "",
+        cached_distance: "",
+        user_data: "",
+        user_data_list: [],
+        active_mods: "",
+        active_mods_list: [],
+        customization: "",
+        cached_stats: "",
+        cached_stats_list: [],
+        cached_discovery: "",
+        cached_discovery_list: [],
+        version: "",
+        online_user_name: "",
+        online_password: "",
+        profile_name: "",
+        creation_time: "",
+        save_time: "",
+      }
     };
     this.init();
     return this;
   }
   init() {
     try {
-      this.saveLoad();
+      //  this.saveLoad();
       this.profileDetailLoad();
       // console.log("Profile Detail: ", this.profileDetail);
     } catch (error) {
@@ -61,7 +63,7 @@ class Profile {
     // console.log("Profile Detail Stream :", profileDetailStreamLines);
     for (let line of profileDetailStreamLines) {
       if (line.includes("user_profile")) {
-        this.profileDetail.user_profile_nameless = line.split(" ")[2];
+        //this.profileDetail.user_profile_nameless = line.split(" ")[2];
         // console.log("- Line:", line.split(" "));
       }
 
