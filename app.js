@@ -9,10 +9,12 @@ const profileRoutes = require("./routes/profileRoutes");
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
+  console.log("/ App Data:", app);
   resJson = {
     routes: [
       { title: "Main", path: "/" },
-      { title: "Profile List", path: "/profiles" },
+      { title: "Local Profile List", path: "/profiles/local/" },
+      { title: "Cloud Profile List", path: "/profiles/cloud/" },
     ],
   };
   res.json(resJson);
@@ -23,7 +25,7 @@ app.get("/", (req, res) => {
 app.use("/profiles", profileRoutes);
 
 // Sunucuyu başlat
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}.`);
 });

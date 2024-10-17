@@ -4,11 +4,14 @@ const path = require("path");
 
 class Profile {
   constructor(dirPath) {
+    this.location = "/profiles/local/" + dirPath.split("\\").pop();
     this.path = dirPath;
     this.displayName = dirPath.split("\\").pop();
     this.profileFilePath = path.join(dirPath, "profile.sii");
-    this.saves = [];
-    this.profile = {
+    this.profileDetailDecrypt = false;
+
+    this.profileDetailText = "";
+    this.profileDetail = {
       nameless: "",
       content: {
         face: "",
@@ -36,35 +39,37 @@ class Profile {
         save_time: "",
       },
     };
+    this.saveList = [];
+    this.saveCount = 0;
     this.init();
-    return this;
   }
-  init() {
-    try {
+
+  init = () => {
+    this.profileDetailIsDecrypt();
+    if (this.profileDetailDecrypt) {
       this.profileDetailLoad();
-      //  this.saveLoad();
-      // console.log("Profile Detail: ", this.profileDetail);
-    } catch (error) {
-      console.error(error);
+    } else {
+      this.profileDetail = {};
     }
-  }
-  saveLoad() {
-    const profileSaveDirs = fs.readdirSync(path.join(this.path, "save"));
-    for (const profileSaveDir of profileSaveDirs) {
-      const profileSaveData = fs.readdirSync(
-        path.join(this.path, "save", profileSaveDir)
-      );
-      this.saves.push(new Save(path.join(this.path, "save", profileSaveDir)));
+  };
+
+  profileDetailIsDecrypt = () => {
+    const profileDetailStream = fs.readFileSync(this.profileFilePath, "utf8");
+    let profileDetailStreamLines = profileDetailStream.split("\n");
+
+    if (profileDetailStreamLines[0].includes("SiiNunit")) {
+      this.profileDetailDecrypt = true;
+    } else {
+      this.profileDetailDecrypt = false;
     }
-  }
-  profileDetailLoad() {
+  };
+
+  profileDetailLoad = () => {
     const profileDetailStream = fs.readFileSync(this.profileFilePath, "utf-8");
     let profileDetailStreamLines = profileDetailStream.split("\n");
-    // console.log("Profile Detail Stream :", profileDetailStreamLines);
     for (let line of profileDetailStreamLines) {
       if (line.includes("user_profile")) {
-        this.profile.nameless = line.split(" ")[2];
-        console.log("- Line:", line.split(" "));
+        this.profileDetail.nameless = line.split(" ")[2];
       }
 
       line = line.trim().split(": ");
@@ -76,83 +81,83 @@ class Profile {
         switch (key) {
           case "face":
             const face = Number(value);
-            this.profile.content.face = face;
+            this.profileDetail.content.face = face;
             break;
           case "profile_name":
             value = value.replaceAll('"', "");
             const profile_name = value;
-            this.profile.content.profile_name = profile_name;
+            this.profileDetail.content.profile_name = profile_name;
             break;
           case "brand":
             const brand = value;
-            this.profile.content.brand = brand;
+            this.profileDetail.content.brand = brand;
             break;
           case "company_name":
             value = value.replaceAll('"', "");
             const company_name = value;
-            this.profile.content.company_name = company_name;
+            this.profileDetail.content.company_name = company_name;
           case "male":
             const male = Boolean(value);
-            this.profile.content.male = male;
+            this.profileDetail.content.male = male;
             break;
           case "cached_experience":
             const cached_experience = Number(value);
-            this.profile.content.cached_experience = cached_experience;
+            this.profileDetail.content.cached_experience = cached_experience;
             break;
 
           case "cached_distance":
             const cached_distance = Number(value);
-            this.profile.content.cached_distance = cached_distance;
+            this.profileDetail.content.cached_distance = cached_distance;
             break;
           case "cached_stats":
             const cached_stats = Number(value);
-            this.profile.content.cached_stats = cached_stats;
+            this.profileDetail.content.cached_stats = cached_stats;
             break;
           case "cached_discovery":
             const cached_discovery = Number(value);
-            this.profile.content.cached_discovery = cached_discovery;
+            this.profileDetail.content.cached_discovery = cached_discovery;
             break;
           case "user_data":
             const user_data = Number(value);
-            this.profile.content.user_data = user_data;
+            this.profileDetail.content.user_data = user_data;
           case "active_mods":
             const active_mods = Number(value);
-            this.profile.content.active_mods = active_mods;
+            this.profileDetail.content.active_mods = active_mods;
             break;
           case "customization":
             const customization = Number(value);
-            this.profile.content.customization = customization;
+            this.profileDetail.content.customization = customization;
             break;
           case "version":
             const version = Number(value);
-            this.profile.content.version = version;
+            this.profileDetail.content.version = version;
             break;
           case "online_user_name":
             value = value.replaceAll('"', "");
             const online_user_name = value;
-            this.profile.content.online_user_name = online_user_name;
+            this.profileDetail.content.online_user_name = online_user_name;
           case "online_password":
             value = value.replaceAll('"', "");
             const online_password = value;
-            this.profile.content.online_password = online_password;
+            this.profileDetail.content.online_password = online_password;
             break;
           case "creation_time":
             const creation_time = Number(value);
-            this.profile.content.creation_time = creation_time;
+            this.profileDetail.content.creation_time = creation_time;
             break;
           case "save_time":
             const save_time = Number(value);
-            this.profile.content.save_time = save_time;
+            this.profileDetail.content.save_time = save_time;
             break;
           case "map_path":
             value = value.replaceAll('"', "");
             const map_path = value;
-            this.profile.content.map_path = map_path;
+            this.profileDetail.content.map_path = map_path;
             break;
           case "logo":
             value = value.replaceAll('"', "");
             const logo = value;
-            this.profile.content.logo = logo;
+            this.profileDetail.content.logo = logo;
             break;
           default:
             break;
@@ -160,30 +165,47 @@ class Profile {
 
         // User Data
         if (key.includes("user_data[")) {
-          this.profile.content.user_data_list.push(value);
+          this.profileDetail.content.user_data_list.push(value);
           // console.log("User Data Item:", value);
         }
         // Active Mods
         if (key.includes("active_mods[")) {
-          this.profile.content.active_mods_list.push(value);
+          this.profileDetail.content.active_mods_list.push(value);
           // console.log("Active Mods Item:", value);
         }
         // Cached Stats
         if (key.includes("cached_stats[")) {
-          this.profile.content.cached_stats_list.push(value);
+          this.profileDetail.content.cached_stats_list.push(value);
           // console.log("Cached Stats Item:", value);
         }
         // Cached Discovery
         if (key.includes("cached_discovery[")) {
-          this.profile.content.cached_discovery_list.push(value);
+          this.profileDetail.content.cached_discovery_list.push(value);
           // console.log("Cached Discovery Item:", value);
         }
       }
     }
-  }
-  getProfileSavesList() {
-    return this.saves;
-  }
+  };
+
+  // Save Controls
+  saveLoad = () => {
+    try {
+      const profileSaveDirs = fs.readdirSync(path.join(this.path, "save"));
+      for (const profileSaveDir of profileSaveDirs) {
+        const profileSaveDataPath = path.join(
+          this.path,
+          "save",
+          profileSaveDir
+        );
+        this.saveList.push(new Save(profileSaveDataPath));
+      }
+    } catch (error) {
+      console.error("Profile | Save Load Method - Error:", error);
+    }
+  };
+  saveCountLoad = () => {
+    this.saveCount = fs.readdirSync(path.join(this.path, "save")).length;
+  };
 }
 
 module.exports = Profile;

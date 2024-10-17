@@ -4,8 +4,10 @@ const router = express.Router();
 // Controller
 const profileController = require("../controllers/profileController");
 
-router.get("/", async () => {
-  await profileController.loadProfiles();
-});
-
+router.get("/local/", profileController.localLoadProfiles);
+router.get("/local/:displayName", profileController.localGetProfile);
+router.get(
+  "/local/:displayName/save/:saveDisplayName",
+  profileController.localGetProfileSaveItem
+);
 module.exports = router;
