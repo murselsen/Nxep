@@ -1,8 +1,9 @@
 const path = require("path");
 const fs = require("fs");
+const readline = require("readline");
 const Dependencies = require("./dependencies");
 const GameSii = require("./gameSii");
-const SaveModel = require("./saves");
+const { Economy } = require("./saves");
 
 class Save {
   constructor(dirPath) {
@@ -38,7 +39,7 @@ class Save {
     // Todo : Game.sii File Content
     this.gameDecrypt = false;
     this.gameText = "";
-    this.game = {};
+    this.game = null;
 
     // Todo : Initialize
     this.init();
@@ -187,20 +188,6 @@ class Save {
   };
   infoTextFileWrite = () => {
     fs.writeFileSync(path.join(this.path, "info.sii"), this.infoText);
-    console.log(
-      `Profile: ${this.path.split("\\")[this.path.split("\\").length - 3]}
-      Save : ${this.displayName}\n
-      info.txt file has been written`
-    );
-  };
-  // Todo: Save Game.sii
-  gameLoad = () => {
-    try {
-      console.log("Save | GameSii Load Method");
-      this.game = new GameSii(this.gamePath);
-    } catch (error) {
-      console.error("Save | GameSii Load Method - Error:", error);
-    }
   };
 }
 

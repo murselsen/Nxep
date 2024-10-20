@@ -137,6 +137,10 @@ class Economy {
     };
     return this;
   }
+
+  getData = () => {
+    return this;
+  };
 }
 
 module.exports = Economy;

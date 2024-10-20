@@ -1,4 +1,5 @@
 const Company = require("./company");
+const Bank = require("./bank");
 const DeliveryLog = require("./delivery_log");
 const DeliveryLogEntry = require("./delivery_log_entry");
 const DriverAi = require("./driver_ai");
@@ -30,8 +31,9 @@ const Vehicle = require("./vehicle");
 const VehicleAccessory = require("./vehicle_accessory");
 const VehicleAddonAccessory = require("./vehicle_addon_accessory");
 const VehiclePaintJobAccessory = require("./vehicle_paint_job_accessory");
-
+const VehicleWheelAccessory = require("./VehicleWheelAccessory");
 module.exports = {
+  Bank,
   Company,
   DeliveryLog,
   DeliveryLogEntry,
@@ -64,4 +66,5 @@ module.exports = {
   VehicleAccessory,
   VehicleAddonAccessory,
   VehiclePaintJobAccessory,
+  VehicleWheelAccessory,
 };

@@ -9,7 +9,6 @@ const profileRoutes = require("./routes/profileRoutes");
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  console.log("/ App Data:", app);
   resJson = {
     routes: [
       { title: "Main", path: "/" },
@@ -25,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/profiles", profileRoutes);
 
 // Sunucuyu başlat
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000 || 3001;
 app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}.`);
 });

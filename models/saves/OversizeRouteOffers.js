@@ -1,6 +1,6 @@
 class OversizeRouteOffers {
-  constructor() {
-    this.nameless = "";
+  constructor(namelessValue) {
+    this.nameless = namelessValue;
     this.content = {
       offers: 0,
       offers_list: [],
